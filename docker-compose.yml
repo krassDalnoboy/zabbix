@@ -105,4 +105,3 @@ volumes:
 networks:
   network-zabbix:
     external: true  # Використовуємо існуючу зовнішню мережу Docker
-    name: bridge
