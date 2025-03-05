@@ -15,7 +15,7 @@ services:
       - postgres
     networks:
       network-zabbix:
-        ipv4_address: 192.168.32.16
+        ipv4_address: 192.168.32.104
 
   zabbix-frontend:
     image: ${ZABBIX_FRONTEND_IMAGE:-zabbix/zabbix-web-nginx-pgsql:ubuntu-7.2.1}
@@ -36,7 +36,7 @@ services:
       - zabbix-server
     networks:
       network-zabbix:
-        ipv4_address: 192.168.32.16
+        ipv4_address: 192.168.32.104
 
   zabbix-agent:
     image:  ${ZABBIX_AGENT_IMAGE:-zabbix/zabbix-agent:ubuntu-7.2.1}
@@ -55,7 +55,7 @@ services:
       - zabbix-server
     networks:
       network-zabbix:
-        ipv4_address: 192.168.32.16
+        ipv4_address: 192.168.32.104
 
   postgres:
     image: ${POSTGRES_IMAGE:-postgres:latest}
@@ -74,7 +74,7 @@ services:
       PG_DATA: /var/lib/postgresql/data/pgdata
     networks:
       network-zabbix:
-        ipv4_address: 192.168.32.16
+        ipv4_address: 192.168.32.104
 
   grafana:
     image: ${GRAFANA_IMAGE:-grafana/grafana}
@@ -96,7 +96,7 @@ services:
       - zabbix-frontend
     networks:
       network-zabbix:
-        ipv4_address: 192.168.32.16
+        ipv4_address: 192.168.32.104
 
 volumes:
   postgres: {}
