@@ -104,4 +104,8 @@ volumes:
 
 networks:
   network-zabbix:
-    external: true  # Використовуємо існуючу зовнішню мережу Docker
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.32.0/24
