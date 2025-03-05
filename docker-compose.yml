@@ -16,6 +16,9 @@ services:
     networks:
       - zabbix-net
     restart: always
+    command: |
+      bash -c "until mysql -h zabbix-db -u root -pzabbix_password -e 'SELECT 1' > /dev/null 2>&1; do echo 'Waiting for database...'; sleep 2; done && \
+               zabbix_server"
 
   zabbix-web:
     image: zabbix/zabbix-web-nginx-mysql:latest
@@ -39,19 +42,16 @@ services:
     image: mysql:5.7
     container_name: zabbix-db
     environment:
-      - MYSQL_ROOT_PASSWORD=root_password
+      - MYSQL_ROOT_PASSWORD=zabbix_password
       - MYSQL_USER=zabbix
       - MYSQL_PASSWORD=zabbix_password
       - MYSQL_DATABASE=zabbix
-      - MYSQL_ROOT_HOST=%
-      - MYSQL_INITDB_SKIP_TZINFO=1
-    command: --max-allowed-packet=64M
     volumes:
       - zabbix-db-data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql # Скрипт ініціалізації
     networks:
       - zabbix-net
     restart: always
-
 
 networks:
   zabbix-net:
