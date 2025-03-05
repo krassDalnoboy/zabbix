@@ -14,7 +14,8 @@ services:
     depends_on:
       - postgres
     networks:
-      - network-zabbix
+      network-zabbix:
+        ipv4_address: 192.168.32.16
 
   zabbix-frontend:
     image: ${ZABBIX_FRONTEND_IMAGE:-zabbix/zabbix-web-nginx-pgsql:ubuntu-7.2.1}
@@ -34,7 +35,8 @@ services:
     depends_on:
       - zabbix-server
     networks:
-      - network-zabbix
+      network-zabbix:
+        ipv4_address: 192.168.32.16
 
   zabbix-agent:
     image:  ${ZABBIX_AGENT_IMAGE:-zabbix/zabbix-agent:ubuntu-7.2.1}
@@ -52,7 +54,8 @@ services:
     depends_on:
       - zabbix-server
     networks:
-      - network-zabbix
+      network-zabbix:
+        ipv4_address: 192.168.32.16
 
   postgres:
     image: ${POSTGRES_IMAGE:-postgres:latest}
@@ -70,7 +73,8 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       PG_DATA: /var/lib/postgresql/data/pgdata
     networks:
-      - network-zabbix
+      network-zabbix:
+        ipv4_address: 192.168.32.16
 
   grafana:
     image: ${GRAFANA_IMAGE:-grafana/grafana}
@@ -91,7 +95,8 @@ services:
     depends_on:
       - zabbix-frontend
     networks:
-      - network-zabbix
+      network-zabbix:
+        ipv4_address: 192.168.32.16
 
 volumes:
   postgres: {}
@@ -99,4 +104,5 @@ volumes:
 
 networks:
   network-zabbix:
-    driver: bridge
+    external: true  # Використовуємо існуючу зовнішню мережу Docker
+    name: bridge

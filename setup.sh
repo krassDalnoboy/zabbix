@@ -1,1 +1,0 @@
-#!/bin/bash# Скрипт для налаштування Zabbixecho "Перевіряємо чи працюють контейнери..."# Перевіряємо статус контейнерівdocker-compose ps# Імпортуємо конфігурації хостів (якщо потрібно)docker exec -i zabbix-server zabbix-cli -i /configs/host-templates.xml
