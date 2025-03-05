@@ -14,8 +14,8 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
     networks:
-      network-zabbix:
-        ipv4_address: 192.168.32.104  # Призначаємо статичну IP лише для одного контейнера
+      networks:
+      - network-zabbix  # Призначаємо статичну IP лише для одного контейнера
 
   zabbix-server:
     image: ${ZABBIX_SERVER_IMAGE:-zabbix/zabbix-server-pgsql:ubuntu-7.2.1}
@@ -31,9 +31,8 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
     depends_on:
       - postgres
-    networks:
-      network-zabbix:  # Усі сервіси підключаються до однієї мережі
-        ipv4_address: 192.168.32.104  # Можна залишити одну IP-адресу для одного контейнера
+         networks:
+      - network-zabbix # Можна залишити одну IP-адресу для одного контейнера
 
   zabbix-frontend:
     image: ${ZABBIX_FRONTEND_IMAGE:-zabbix/zabbix-web-nginx-pgsql:ubuntu-7.2.1}
@@ -53,8 +52,8 @@ services:
     depends_on:
       - zabbix-server
     networks:
-      network-zabbix:
-        ipv4_address: 192.168.32.104  # Призначте один IP для всіх контейнерів
+      network-zabbix:  # Усі сервіси підключаються до однієї мережі
+        ipv4_address: 192.168.32.104 # Призначте один IP для всіх контейнерів
 
   zabbix-agent:
     image: ${ZABBIX_AGENT_IMAGE:-zabbix/zabbix-agent:ubuntu-7.2.1}
@@ -72,8 +71,8 @@ services:
     depends_on:
       - zabbix-server
     networks:
-      network-zabbix:
-        ipv4_address: 192.168.32.104
+      networks:
+      - network-zabbix
 
   grafana:
     image: ${GRAFANA_IMAGE:-grafana/grafana}
@@ -92,8 +91,8 @@ services:
     depends_on:
       - zabbix-frontend
     networks:
-      network-zabbix:
-        ipv4_address: 192.168.32.104
+      networks:
+      - network-zabbix
 
 volumes:
   postgres: {}
