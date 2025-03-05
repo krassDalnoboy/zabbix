@@ -43,11 +43,15 @@ services:
       - MYSQL_USER=zabbix
       - MYSQL_PASSWORD=zabbix_password
       - MYSQL_DATABASE=zabbix
+      - MYSQL_ROOT_HOST=%
+      - MYSQL_INITDB_SKIP_TZINFO=1
+    command: --max-allowed-packet=64M
     volumes:
       - zabbix-db-data:/var/lib/mysql
     networks:
       - zabbix-net
     restart: always
+
 
 networks:
   zabbix-net:
